@@ -3,6 +3,7 @@
 let xPos = 30;
 let yPos = 0;
 let myBees = [];
+let myFlowers = []; 
 let cloudx = 100;
 let cloudy = 100;
 let sunYpos = 500;
@@ -29,6 +30,10 @@ class Bee {
   display() {
     push();
     let bw = 15;
+    bw = bw + random(-5,5);
+    if (bw > 20 || bw < 0) {
+      bw = 15;
+    }
     ellipseMode(RADIUS);
     noStroke();
     fill(171, 240, 255);
@@ -70,17 +75,21 @@ class Flower {
     this.x = x;
     this.y = y;
   }
+
   display() {
     push();
     fill(204, 101, 192, 100);
     translate(this.x, this.y);
     for (let i = 0; i < 10; i++) {
       ellipse(0, 30, 20, 80);
-      rotate(PI / 5);
+      rotate(PI /5);
     }
     pop();
   }
-  run() {}
+
+  run() {
+    this.display();
+  }
 }
 
 
@@ -164,6 +173,9 @@ function setup() {
   for (let i = 0 ; i < 10 ; i++){
     myBees[i] = new Bee(random(0,width),random(0,height));
   }
+  for (let i =0 ; i < 3 ; i++){
+    myFlowers[i] = new Flower(random(0,width),random(0,height));
+  }
 }
 
 
@@ -179,12 +191,13 @@ function draw() {
   rain = new Rain();
   rain.display();
  
-  flower = new Flower(800, 500);
-  flower.display();
- 
   for(let i = 0 ; i < 10 ; i++){
     myBees[i].run();
   }
+  for(let i = 0 ; i<3 ; i++){
+    myFlowers[i].run();
+  }
+
   //ellipseMode(CENTER);
 	//ellipse(400, sunYpos, 300);
 	//if (sunYpos > 250)
