@@ -1,3 +1,4 @@
+//buna teo multumesc
 let xPos = 30;
 let yPos = 0;
 let myBees = [];
