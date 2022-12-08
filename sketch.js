@@ -273,10 +273,10 @@ function draw() {
     let beeX = myFlowers[i].getX();
     let beeY = myFlowers[i].getY();
     if( myFlowers[i].mousePressed()){
-      for (let j = 0 ; j < 10 ; j++){
+      for (let j = 0 ; j < 1 ; j++){
         myBees.push(new Bee( beeX, beeY));
       }
-      bnum+=10;
+      bnum+=1;
     }
   }
   MagicFlower1.run();
