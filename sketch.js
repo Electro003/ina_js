@@ -2,6 +2,7 @@
 
 let xPos = 30;
 let yPos = 0;
+let bnum = 10;
 let myBees = [];
 let myFlowers = [];
 let myClouds = [];
@@ -9,6 +10,7 @@ let bspeed1 = 8;
 let bspeed2 = 5;
 let cloudSpeed1 = 1;
 let cloudSpeed2 = 2;
+let mouseOffSet = 50;
 
 class Bee {
   constructor(x, y) {
@@ -91,7 +93,29 @@ class Flower {
     pop();
   }
 
+  getX(){
+    return this.x;
+  }
+
+  getY(){
+    return this.y;
+  }
+
+  mousePressed(){
+    if(mouseIsPressed && mouseX <= this.x + 50 && mouseX >= this.x - 50 && mouseY <= this.y + 50 && mouseY >= this.y - 50){
+      console.log(mouseX,mouseY);
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  update() {
+  }
+
   run() {
+    this.mousePressed();
+    this.update();
     this.display();
   }
 }
@@ -209,23 +233,31 @@ function draw() {
     let newc = lerpColor(c1, c2, n);
     stroke(newc);
     line(0, y, width, y);
-    }
+  }
+
   grass = new Grass();
   grass.run();
   rain = new Rain();
   rain.display();
  
-  mousePressed();
   for(let i=0 ; i<3 ; i++){
     myClouds[i].run();
   }
-  for(let i = 0 ; i<5 ; i++){
-    myFlowers[i].run();
-  }
 
-}
-function mousePressed() {
-  for (let i = 0; i < 10; i++) {
+  for(let i=0 ; i < bnum; i++){
     myBees[i].run();
   }
+  
+  for(let i = 0 ; i<5 ; i++){
+    myFlowers[i].run();
+    let beeX = myFlowers[i].getX();
+    let beeY = myFlowers[i].getY();
+    if( myFlowers[i].mousePressed()){
+      for (let j = 0 ; j < 10 ; j++){
+        myBees.push(new Bee( beeX, beeY));
+      }
+      bnum+=10;
+    }
+  }
+
 }
