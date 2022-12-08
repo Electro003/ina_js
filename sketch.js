@@ -2,11 +2,12 @@
 let xPos = 30;
 let yPos = 0;
 let myBees = [];
-let cloudx = 100;
-let cloudy = 100;
-let sunYpos = 500;
+let myFlowers = [];
+let myClouds = [];
 let bspeed1 = 8;
 let bspeed2 = 5;
+let cloudSpeed1 = 1;
+let cloudSpeed2 = 2;
 
 let myFlowers= [];
 
@@ -30,6 +31,10 @@ class Bee {
   display() {
     push();
     let bw = 15;
+    bw = bw + random(-5,5);
+    if (bw > 20 || bw < 0) {
+      bw = 15;
+    }
     ellipseMode(RADIUS);
     noStroke();
     fill(171, 240, 255);
@@ -74,6 +79,7 @@ class Flower {
   width: 50,
   height: 80};
   }
+
   display() {
   push();
     fill(204, 101, 192, 100);
@@ -153,14 +159,30 @@ class Cloud{
   constructor(x,y){
     this.x = x;
     this.y = y;
+    this.xmove = random(-cloudSpeed1,cloudSpeed2);
+    
+  }
+  
+  update(){
+    this.x = this.x + this.xmove;
+    if (this.x >= width || this.x <= 0) {
+      this.xmove = -this.xmove;
+    }
   }
 
   display(){
-    fill(250)
+    push();
+    fill(250);
     noStroke();
-    ellipse(cloudx, cloudy, 70, 50);
-    ellipse(cloudx + 10, cloudy + 10, 70, 50);
-    ellipse(cloudx - 20, cloudy + 10, 70, 50);
+    ellipse(this.x, this.y, 70, 50);
+    ellipse(this.x + 10, this.y + 10, 70, 50);
+    ellipse(this.x- 20, this.y + 10, 70, 50);
+    pop();
+  }
+
+  run(){
+    this.update();
+    this.display();
   }
 }
 
@@ -201,9 +223,9 @@ function draw() {
   for(let i = 0 ; i < 10 ; i++){
     myBees[i].run();
   }
-  //ellipseMode(CENTER);
-	//ellipse(400, sunYpos, 300);
-	//if (sunYpos > 250)
-	//	sunYpos--;
+  for(let i=0 ; i<3 ; i++){
+    myClouds[i].run();
+  }
+
 }
 
