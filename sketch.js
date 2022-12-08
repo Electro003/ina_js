@@ -74,12 +74,13 @@ class Flower {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+    
+    
   }
 
   display() {
     ellipseMode(CENTER);
     push();
-    
     fill(255, 0, 0);
     ellipse(this.x + 20, this.y + 5, 80, 20);
     ellipse(this.x - 20, this.y + 5, 80, 20);
@@ -89,11 +90,29 @@ class Flower {
     ellipse(this.x, this.y, 20, 20);
     
     pop();
+    
   }
 
   run() {
     this.display();
   }
+}
+class MagicFlower extends Flower{
+  constructor(x,y){
+    super(x,y);
+    this.angle = 45;
+  }
+  display(){
+    super.display();
+    push();
+    translate(this.x,this.y)
+    fill('pink');
+    rotate(this.angle);
+    rect(5,5,30,30);
+    pop();
+    this.angle = this.angle + 1;
+  }
+
 }
 
 
@@ -101,8 +120,6 @@ class Rain {
   constructor() {
     this.livespan = 255
   }
-  
-
   display() {
     yPos++;
     noStroke();
@@ -172,7 +189,9 @@ class Cloud{
     ellipse(this.x, this.y, 70, 50);
     ellipse(this.x + 10, this.y + 10, 70, 50);
     ellipse(this.x- 20, this.y + 10, 70, 50);
+    ellipse(this.x + 30, this.y + 10, 70, 50);
     pop();
+    
   }
 
   run(){
@@ -193,13 +212,14 @@ function setup() {
   for (let i = 0 ; i < 10 ; i++){
     myBees[i] = new Bee(random(0,width),random(0,height));
   }
-  for (let i =0 ; i < 5 ; i++){
-    myFlowers[i] = new Flower(random(0,width),random(400,height));
+  for (let i =0 ; i < 7 ; i++){
+    myFlowers[i] = new Flower(random(0,width),random(500,height));
   }
 
   for(let i = 0 ; i< 3 ; i++){
     myClouds[i] = new Cloud(random(0,width),random(0,200));
   }
+  MagicFlower1 = new MagicFlower(100,100);
 }
 
 
@@ -219,9 +239,11 @@ function draw() {
   for(let i=0 ; i<3 ; i++){
     myClouds[i].run();
   }
-  for(let i = 0 ; i<5 ; i++){
+  for(let i = 0 ; i<7 ; i++){
     myFlowers[i].run();
+
   }
+  MagicFlower1.run();
 
 }
 function mousePressed() {
