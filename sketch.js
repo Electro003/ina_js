@@ -228,10 +228,10 @@ class Cloud{
     push();
     fill(250);
     noStroke();
-    ellipse(this.x, this.y, 70, 50);
-    ellipse(this.x + 10, this.y + 10, 70, 50);
-    ellipse(this.x- 20, this.y + 10, 70, 50);
-    ellipse(this.x + 30, this.y + 10, 70, 50);
+    ellipse(this.x, this.y, 140, 100);
+    ellipse(this.x + 40, this.y + 20, 140, 110);
+    ellipse(this.x- 70, this.y + 40, 140, 70);
+    ellipse(this.x + 90, this.y + 40, 130, 80);
     pop();
     
   }
