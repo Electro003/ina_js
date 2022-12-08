@@ -106,12 +106,16 @@ class Flower {
   display() {
     ellipseMode(CENTER);
     push();
-    noStroke();
-    fill(255, 0, 0);
-    ellipse(this.location.x + 20, this.location.y + 5, 80, 20);
-    ellipse(this.location.x - 20, this.location.y + 5, 80, 20);
-    ellipse(this.location.x, this.location.y - 20, 20, 80);
-    ellipse(this.location.x, this.location.y + 20, 20, 80);
+    fill(255, 0, 0, 90);
+    ellipse(this.x + 20, this.y + 5, 80, 30);
+    ellipse(this.x - 20, this.y + 5, 80, 30);
+    ellipse(this.x, this.y - 20, 30, 80);
+    ellipse(this.x, this.y + 20, 30, 80);
+
+    fill(255,0,170);
+    ellipse(this.x, this.y, 70, 50);
+    ellipse(this.x, this.y, 50, 70);
+
     fill(255, 255, 0);
     ellipse(this.location.x, this.location.y, 20, 20);
     
@@ -155,18 +159,21 @@ class MagicFlower extends Flower{
   display(){
     super.display();
     push();
-    translate(700,500)
-    fill('pink');
+    translate(500,500)
+    fill(250,0,0);
+    //rotate(this.angle);
+    ellipse(this.x+14,this.y+5,70,50);
+    ellipse(this.x-14,this.y+5,70,50);
+    ellipse(this.x,this.y-14,50,70);
+    ellipse(this.x,this.y+14,50,70);
+    fill('yellow');
     
-    rect(20,20,40,40);
+    ellipse(this.x,this.y,50,50);
+    fill('skyblue');
+    rect(this.x-10,this.y-10,20,20);
+    rect()
     pop();
-    push();
-    translate(700,500)
-    fill('purple');
-    rotate(this.angle);
-    ellipse(10,10,50,50);
-    pop();
-    this.angle = this.angle + 1;
+    //this.angle = this.angle + 1;
   }
 
 }
@@ -306,10 +313,10 @@ class Cloud{
     push();
     fill(250);
     noStroke();
-    ellipse(this.location.x, this.location.y, 70, 50);
-    ellipse(this.location.x + 10, this.location.y + 10, 70, 50);
-    ellipse(this.location.x- 20, this.location.y + 10, 70, 50);
-    ellipse(this.location.x + 30, this.location.y + 10, 70, 50);
+    ellipse(this.x, this.y, 140, 100);
+    ellipse(this.x + 40, this.y + 20, 140, 110);
+    ellipse(this.x- 70, this.y + 40, 140, 70);
+    ellipse(this.x + 90, this.y + 40, 130, 80);
     pop();
   }
 
