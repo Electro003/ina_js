@@ -1,4 +1,5 @@
 
+
 let xPos = 30;
 let yPos = 0;
 let myBees = [];
@@ -8,8 +9,6 @@ let bspeed1 = 8;
 let bspeed2 = 5;
 let cloudSpeed1 = 1;
 let cloudSpeed2 = 2;
-
-let myFlowers= [];
 
 class Bee {
   constructor(x, y) {
@@ -75,30 +74,26 @@ class Flower {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.petal = { 
-  width: 50,
-  height: 80};
   }
 
   display() {
-  push();
-    fill(204, 101, 192, 100);
-    translate(200,300);
-    for (let i = 0; i < 10; i++) {
-    ellipse(0, 30, 20, 80);
-    rotate(-90);
-    }
-  stroke('limegreen');
-  strokeWeight(10);
-  line(200, 400, 200, 600);
-  
-  //Leaf
-  noStroke();
-  fill('yellow');
-  ellipse(0, 0, 20);
+    ellipseMode(CENTER);
+    push();
+    
+    fill(255, 0, 0);
+    ellipse(this.x + 20, this.y + 5, 80, 20);
+    ellipse(this.x - 20, this.y + 5, 80, 20);
+    ellipse(this.x, this.y - 20, 20, 80);
+    ellipse(this.x, this.y + 20, 20, 80);
+    fill(255, 255, 0);
+    ellipse(this.x, this.y, 20, 20);
+    
     pop();
   }
-  
+
+  run() {
+    this.display();
+  }
 }
 
 
@@ -197,11 +192,15 @@ function setup() {
   c2 = color(255, 209, 191);
   for (let i = 0 ; i < 10 ; i++){
     myBees[i] = new Bee(random(0,width),random(0,height));
-    
   }
-  for (let i = 0 ; i < 10 ; i++){
-  myFlowers[i] = new Flower(random(0,width),random(500,height));
-}}
+  for (let i =0 ; i < 5 ; i++){
+    myFlowers[i] = new Flower(random(0,width),random(400,height));
+  }
+
+  for(let i = 0 ; i< 3 ; i++){
+    myClouds[i] = new Cloud(random(0,width),random(0,200));
+  }
+}
 
 
 function draw() { 
@@ -216,16 +215,17 @@ function draw() {
   rain = new Rain();
   rain.display();
  
-  //flower = new Flower(800, 500);
-  for(let i = 0 ; i < 10 ; i++){
-  myFlowers[i].display();}
- 
-  for(let i = 0 ; i < 10 ; i++){
-    myBees[i].run();
-  }
+  mousePressed();
   for(let i=0 ; i<3 ; i++){
     myClouds[i].run();
   }
+  for(let i = 0 ; i<5 ; i++){
+    myFlowers[i].run();
+  }
 
 }
-
+function mousePressed() {
+  for (let i = 0; i < 10; i++) {
+    myBees[i].run();
+  }
+}
