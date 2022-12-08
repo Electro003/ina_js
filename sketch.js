@@ -1,9 +1,8 @@
-
-
 let xPos = 30;
 let yPos = 0;
-let bnum = 10;
+let beesNumber = 10;
 let myBees = [];
+let flowerNumber = 0;
 let myFlowers = [];
 let myClouds = [];
 let bspeed1 = 8;
@@ -11,22 +10,28 @@ let bspeed2 = 5;
 let cloudSpeed1 = 1;
 let cloudSpeed2 = 2;
 let mouseOffSet = 50;
+let isDayOrNight;
 
 class Bee {
   constructor(x, y) {
     this.location = createVector(x, y);
-    this.xmove = random (-bspeed2,bspeed1);
-    this.ymove = random (-bspeed1,bspeed2);
+    this.velocity = createVector(random(-bspeed2,bspeed1),random(-bspeed1,bspeed2));
+    this.livespan = 1500;
+  }
+
+   get isAlive(){
+    return this.livespan > 0;
   }
 
   update() {
-    this.location.x = this.location.x + this.xmove;
-    this.location.y = this.location.y + this.ymove;
-    if (this.location.x >= width || this.location.x <= 0) {
-      this.xmove = -this.xmove;
+    this.location.add(this.velocity);
+    if (this.location.x > width || this.location.x < 0) {
+      this.velocity.x = -this.velocity.x;
     } else if (this.location.y >= height || this.location.y <= 0) {
-      this.ymove = -this.ymove;
+      this.velocity.y = -this.velocity.y;
     }
+
+    this.livespan-=2;
   }
 
   display() {
@@ -62,6 +67,9 @@ class Bee {
       this.location.x + 10,
       this.location.y + 5
     );
+    line(this.location.x,this.location.y-20, this.location.x+5 , this.location.y-30);
+    line(this.location.x,this.location.y-20, this.location.x-5 , this.location.y-30);
+    triangle(this.location.x+1,location.y+15,this.location.x-1,location.y+15,this.location.x-1,this.location.y+23)
     pop();
   }
 
@@ -74,38 +82,54 @@ class Bee {
 
 class Flower {
   constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    
-    
+    for(let i = 0 ; i < flowerNumber ; i++){
+      if(flowerNumber[i].getX() <= x+100  && flowerNumber[i].getY <= y+100){
+          x = x - 50;
+          y = y - 50;
+      }
+      else if(flowerNumber[i].getX() <= x+100  && flowerNumber[i].getY >= y-100){
+        x = x - 50;
+        y = y + 50;
+      }
+      else if(flowerNumber[i].getX() <= x-100  && flowerNumber[i].getY >= y+100){
+        x = x + 50;
+        y = y - 50;
+      }
+      else{
+        x = x + 50;
+        y = y + 50;
+      }
+    }
+    this.location = createVector(x,y);
   }
 
   display() {
     ellipseMode(CENTER);
     push();
+    noStroke();
     fill(255, 0, 0);
-    ellipse(this.x + 20, this.y + 5, 80, 20);
-    ellipse(this.x - 20, this.y + 5, 80, 20);
-    ellipse(this.x, this.y - 20, 20, 80);
-    ellipse(this.x, this.y + 20, 20, 80);
+    ellipse(this.location.x + 20, this.location.y + 5, 80, 20);
+    ellipse(this.location.x - 20, this.location.y + 5, 80, 20);
+    ellipse(this.location.x, this.location.y - 20, 20, 80);
+    ellipse(this.location.x, this.location.y + 20, 20, 80);
     fill(255, 255, 0);
-    ellipse(this.x, this.y, 20, 20);
+    ellipse(this.location.x, this.location.y, 20, 20);
     
     pop();
     
   }
 
   getX(){
-    return this.x;
+    return this.location.x;
   }
 
   getY(){
-    return this.y;
+    return this.location.y;
   }
 
   mousePressed(){
-    if(mouseIsPressed && mouseX <= this.x + 50 && mouseX >= this.x - 50 && mouseY <= this.y + 50 && mouseY >= this.y - 50){
-      console.log(mouseX,mouseY);
+    if(mouseIsPressed && mouseX <= this.location.x + 50 && mouseX >= this.location.x - 50 
+      && mouseY <= this.location.y + 50 && mouseY >= this.location.y - 50){
       return true;
     }
     else{
@@ -121,10 +145,12 @@ class Flower {
     this.display();
   }
 }
+
+
 class MagicFlower extends Flower{
   constructor(x,y){
     super(x,y);
-    this.angle = 45;
+    this.angle = 0;
   }
   display(){
     super.display();
@@ -172,6 +198,59 @@ class Rain {
   }
 }
 
+class Sun {
+  constructor(x,y) {
+    this.location = createVector(x,y);
+    this.angle = 0;
+    this.maxRaySize = 450;
+    this.ray = 400;
+  }
+  display(){
+    push()
+    noStroke();
+    translate(windowWidth/2,windowHeight/2);
+    fill('yellow');
+    rotate(this.angle);
+    ellipse(this.location.x,this.location.y,400,400);
+    fill(200, 130, 10, 40);
+    ellipse(this.location.x,this.location.y,this.ray,this.ray);
+    fill('orange');
+    ellipse(this.location.x,this.location.y,350,350);
+    pop();
+    if(this.angle > 360 ){
+      this.angle = 0;
+    }
+    if(this.angle>=150 && this.angle <= 320){
+      isDayOrNight = true;
+    }
+    else
+    {
+      isDayOrNight = false;
+    }
+    this.angle = this.angle + 0.2;
+  }
+
+
+
+  update(){
+    if(key == 's'){
+      this.ray+=1.5;
+      if(this.maxRaySize < this.ray){
+        this.ray = 400;
+      }
+    }
+    else if (key == 'f')
+    {
+      this.ray = 400;
+    }
+  }
+
+  run(){
+    this.update();
+    this.display();
+  }
+}
+
 
 class Grass{
   constructor(){
@@ -180,6 +259,7 @@ class Grass{
   }
   display(){
     push();
+    noStroke();
     fill('darkgreen');
     beginShape();
     vertex(0, 1200);
@@ -211,16 +291,14 @@ class Grass{
 
 class Cloud{
   constructor(x,y){
-    this.x = x;
-    this.y = y;
-    this.xmove = random(-cloudSpeed1,cloudSpeed2);
-    
+    this.location = createVector(x,y);
+    this.velocity = createVector(random(-cloudSpeed1,cloudSpeed2),0);
   }
   
   update(){
-    this.x = this.x + this.xmove;
-    if (this.x >= width || this.x <= 0) {
-      this.xmove = -this.xmove;
+    this.location.add(this.velocity);
+    if (this.location.x >= width || this.location.x <= 0) {
+      this.velocity.x = -this.velocity.x;
     }
   }
 
@@ -228,12 +306,11 @@ class Cloud{
     push();
     fill(250);
     noStroke();
-    ellipse(this.x, this.y, 70, 50);
-    ellipse(this.x + 10, this.y + 10, 70, 50);
-    ellipse(this.x- 20, this.y + 10, 70, 50);
-    ellipse(this.x + 30, this.y + 10, 70, 50);
+    ellipse(this.location.x, this.location.y, 70, 50);
+    ellipse(this.location.x + 10, this.location.y + 10, 70, 50);
+    ellipse(this.location.x- 20, this.location.y + 10, 70, 50);
+    ellipse(this.location.x + 30, this.location.y + 10, 70, 50);
     pop();
-    
   }
 
   run(){
@@ -242,18 +319,17 @@ class Cloud{
   }
 }
 
-class Sunshine{
-  
-}
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   c1 = color(0, 51, 102);
   c2 = color(255, 209, 191);
+
   for (let i = 0 ; i < 10 ; i++){
     myBees[i] = new Bee(random(0,width),random(0,height));
   }
+
   for (let i =0 ; i < 7 ; i++){
     myFlowers[i] = new Flower(random(0,width),random(500,height));
   }
@@ -261,42 +337,53 @@ function setup() {
   for(let i = 0 ; i< 3 ; i++){
     myClouds[i] = new Cloud(random(0,width),random(0,200));
   }
+
   MagicFlower1 = new MagicFlower(100,100);
+  
+  sun = new Sun(350,350);
 }
 
 
 function draw() { 
+
   for (let y = 0; y < height; y++) {
     n = map(y, 0, height, 0, 1);
-    let newc = lerpColor(c1, c2, n);
+    let newc;
+    if(isDayOrNight){
+      newc = lerpColor(c2, c1, n);
+    }
+    else{
+      newc = lerpColor(c1, c2, n);
+    }
     stroke(newc);
     line(0, y, width, y);
   }
-
+  
+  sun.run();
   grass = new Grass();
   grass.run();
   rain = new Rain();
-  rain.display();
- 
-  for(let i=0 ; i<3 ; i++){
-    myClouds[i].run();
-  }
 
-  for(let i=0 ; i < bnum; i++){
-    myBees[i].run();
+  if(isDayOrNight == false){
+    rain.display();
   }
+  
+  myClouds.forEach((cloud) => cloud.run());
+
+  myBees = myBees.filter((bee) => bee.isAlive)
+  myBees.forEach((bee) => bee.run());
   
   for(let i = 0 ; i<5 ; i++){
     myFlowers[i].run();
     let beeX = myFlowers[i].getX();
     let beeY = myFlowers[i].getY();
     if( myFlowers[i].mousePressed()){
-      for (let j = 0 ; j < 1 ; j++){
-        myBees.push(new Bee( beeX, beeY));
-      }
-      bnum+=1;
+      beesNumber+=1;
+      myBees.push(new Bee( beeX, beeY));
+
     }
   }
+
   MagicFlower1.run();
 
 }
