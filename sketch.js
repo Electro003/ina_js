@@ -105,10 +105,16 @@ class MagicFlower extends Flower{
   display(){
     super.display();
     push();
-    translate(this.x,this.y)
+    translate(700,500)
     fill('pink');
+    
+    rect(20,20,40,40);
+    pop();
+    push();
+    translate(700,500)
+    fill('purple');
     rotate(this.angle);
-    rect(5,5,30,30);
+    ellipse(10,10,50,50);
     pop();
     this.angle = this.angle + 1;
   }
@@ -157,6 +163,18 @@ class Grass{
       let nx = map(x, 0, width, 0, 4);
       let y = (height / 2) * noise(nx);
       vertex(x, y + 200);
+    }
+    vertex( windowWidth, windowHeight);
+    endShape();
+    pop();
+    push();
+    fill('green');
+    beginShape();
+    vertex(0, 1200);
+    for (let x = 0; x < width+1; x++) {
+      let nx = map(x, 0, width, 0, 4);
+      let y = (height / 2) * noise(nx);
+      vertex(x, y + 500);
     }
     vertex( windowWidth, windowHeight);
     endShape();
