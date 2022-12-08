@@ -8,6 +8,8 @@ let sunYpos = 500;
 let bspeed1 = 8;
 let bspeed2 = 5;
 
+let myFlowers= [];
+
 class Bee {
   constructor(x, y) {
     this.location = createVector(x, y);
@@ -68,18 +70,29 @@ class Flower {
   constructor(x, y) {
     this.x = x;
     this.y = y;
+    this.petal = { 
+  width: 50,
+  height: 80};
   }
   display() {
-    push();
+  push();
     fill(204, 101, 192, 100);
-    translate(this.x, this.y);
+    translate(200,300);
     for (let i = 0; i < 10; i++) {
-      ellipse(0, 30, 20, 80);
-      rotate(PI / 5);
+    ellipse(0, 30, 20, 80);
+    rotate(-90);
     }
+  stroke('limegreen');
+  strokeWeight(10);
+  line(200, 400, 200, 600);
+  
+  //Leaf
+  noStroke();
+  fill('yellow');
+  ellipse(0, 0, 20);
     pop();
   }
-  run() {}
+  
 }
 
 
@@ -162,8 +175,11 @@ function setup() {
   c2 = color(255, 209, 191);
   for (let i = 0 ; i < 10 ; i++){
     myBees[i] = new Bee(random(0,width),random(0,height));
+    
   }
-}
+  for (let i = 0 ; i < 10 ; i++){
+  myFlowers[i] = new Flower(random(0,width),random(500,height));
+}}
 
 
 function draw() { 
@@ -178,8 +194,9 @@ function draw() {
   rain = new Rain();
   rain.display();
  
-  flower = new Flower(800, 500);
-  flower.display();
+  //flower = new Flower(800, 500);
+  for(let i = 0 ; i < 10 ; i++){
+  myFlowers[i].display();}
  
   for(let i = 0 ; i < 10 ; i++){
     myBees[i].run();
