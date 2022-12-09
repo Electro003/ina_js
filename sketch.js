@@ -9,14 +9,13 @@ let bspeed1 = 8;
 let bspeed2 = 5;
 let cloudSpeed1 = 1;
 let cloudSpeed2 = 2;
-let mouseOffSet = 50;
 let isDayOrNight;
 
 class Bee {
   constructor(x, y) {
     this.location = createVector(x, y);
     this.velocity = createVector(random(-bspeed2,bspeed1),random(-bspeed1,bspeed2));
-    this.livespan = 1500;
+      this.livespan = 1500;
   }
 
    get isAlive(){
@@ -107,14 +106,14 @@ class Flower {
     ellipseMode(CENTER);
     push();
     fill(255, 0, 0, 90);
-    ellipse(this.x + 20, this.y + 5, 80, 30);
-    ellipse(this.x - 20, this.y + 5, 80, 30);
-    ellipse(this.x, this.y - 20, 30, 80);
-    ellipse(this.x, this.y + 20, 30, 80);
+    ellipse(this.location.x + 20, this.location.y + 5, 80, 30);
+    ellipse(this.location.x - 20, this.location.y + 5, 80, 30);
+    ellipse(this.location.x, this.location.y - 20, 30, 80);
+    ellipse(this.location.x, this.location.y + 20, 30, 80);
 
     fill(255,0,170);
-    ellipse(this.x, this.y, 70, 50);
-    ellipse(this.x, this.y, 50, 70);
+    ellipse(this.location.x, this.location.y, 70, 50);
+    ellipse(this.location.x, this.location.y, 50, 70);
 
     fill(255, 255, 0);
     ellipse(this.location.x, this.location.y, 20, 20);
@@ -154,6 +153,8 @@ class Flower {
 class MagicFlower extends Flower{
   constructor(x,y){
     super(x,y);
+    this.x = x;
+    this.y = y;
     this.angle = 0;
   }
   display(){
@@ -161,7 +162,7 @@ class MagicFlower extends Flower{
     push();
     translate(500,500)
     fill(250,0,0);
-    //rotate(this.angle);
+    rotate(this.angle);
     ellipse(this.x+14,this.y+5,70,50);
     ellipse(this.x-14,this.y+5,70,50);
     ellipse(this.x,this.y-14,50,70);
@@ -171,9 +172,8 @@ class MagicFlower extends Flower{
     ellipse(this.x,this.y,50,50);
     fill('skyblue');
     rect(this.x-10,this.y-10,20,20);
-    rect()
     pop();
-    //this.angle = this.angle + 1;
+    this.angle = this.angle + 1;
   }
 
 }
@@ -313,10 +313,10 @@ class Cloud{
     push();
     fill(250);
     noStroke();
-    ellipse(this.x, this.y, 140, 100);
-    ellipse(this.x + 40, this.y + 20, 140, 110);
-    ellipse(this.x- 70, this.y + 40, 140, 70);
-    ellipse(this.x + 90, this.y + 40, 130, 80);
+    ellipse(this.location.x, this.location.y, 140, 100);
+    ellipse(this.location.x + 40, this.location.y + 20, 140, 110);
+    ellipse(this.location.x- 70, this.location.y + 40, 140, 70);
+    ellipse(this.location.x + 90, this.location.y + 40, 130, 80);
     pop();
   }
 
@@ -345,7 +345,7 @@ function setup() {
     myClouds[i] = new Cloud(random(0,width),random(0,200));
   }
 
-  MagicFlower1 = new MagicFlower(100,100);
+  MagicFlower1 = new MagicFlower(350,350);
   
   sun = new Sun(350,350);
 }
